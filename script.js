@@ -19,9 +19,8 @@ for (var i = 1; i<dlugosc; i++){
     //console.log(tab);
 }
 
-
 document.addEventListener('keydown',function(event){
-    console.log(keyaction);
+    // console.log(keyaction);
     if(event.keyCode == 40&& keyaction<2){
         if(kierunek != 'lewo' ) {
             kierunek = 'prawo';}
@@ -40,24 +39,23 @@ document.addEventListener('keydown',function(event){
         //dlugosc++;
     }
     else if(event.keyCode == 32){
-        refresh();
+        location.reload();
     }
     if(keyaction>1){}
     else{keyaction++;}
-
-    // ctx.beginPath();
-    // ctx.clearRect(0, 0, c.width, c.height);
-    // ctx.rect(x*20, y*20, 20, 20);
-    // ctx.stroke();
 });
 
 
-async function loop() {
+function loop() {
     if(kolizja==true){
-        refresh();
+        location.reload();
     }
 
-    for (;;){
+    // for (;;){
+    setInterval(function(){
+
+        keyaction = 1;
+        ctx.clearRect(0, 0, c.width, c.height);
 
         //inkrementuj wybrany kierunek
         if (kierunek == 'dol'){
@@ -87,9 +85,7 @@ async function loop() {
                     //console.log('bylemtu');
                     rand = randprize();
                 }
-
             }
-
         }
 
         //dodaje ogon
@@ -128,7 +124,7 @@ async function loop() {
             ctx.font = "30px Arial";
             ctx.fillText('Wynik: ' + (dlugosc-1),10,50);
             ctx.fillText('Nacisnij spacje',10,100);
-            break;
+            return 0;
         }
 
         ctx.beginPath();
@@ -143,23 +139,8 @@ async function loop() {
         drawprice(rand[0],rand[1]);
         ctx.font = "20px Arial";
         ctx.fillText((dlugosc-1),10,30);
-        await sleep(speed);
-        console.log(keyaction);
-        keyaction=1;
-        ctx.clearRect(0, 0, c.width, c.height);
-        //document.getElementById("dupa").innerHTML = 'Wynik: ' + (dlugosc-1);
-        //console.log(tab[1][0]);
-    }
+    },speed)
 }
-
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
-
-
 
 function randprize(){
     var xprize = Math.floor((Math.random() * (c.width/20)-1) + 1);
@@ -173,8 +154,4 @@ function drawprice(x,y){
     ctx.arc(x*20+10, y*20+10, 10, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-}
-
-function refresh() {
-    location.reload();
 }
